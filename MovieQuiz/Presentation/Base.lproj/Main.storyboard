@@ -44,7 +44,7 @@
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="15"/>
+                                                <integer key="value" value="20"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
@@ -111,7 +111,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="IVa-Ed-Wyt" id="ktk-jR-tJc"/>
                         <outlet property="imageView" destination="dWR-44-1JI" id="8R7-j3-ybu"/>
+                        <outlet property="noButton" destination="JLr-al-xqB" id="XfC-1N-aKE"/>
                         <outlet property="textLabel" destination="BVQ-Gt-nCl" id="3hv-xq-qru"/>
+                        <outlet property="yesButton" destination="x4H-zY-eaN" id="NKD-bA-dpy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
