@@ -140,11 +140,11 @@ final class MovieQuizViewController: UIViewController {
             )
             show(quiz: viewModel)
         } else {
-            currentQuestionIndex += 1  // для перехода к следующему вопросу
+            currentQuestionIndex += 1  //для перехода к следующему вопросу
 
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
-            show(quiz: viewModel)  // для отображения следующего вопроса
+            show(quiz: viewModel)  //для отображения следующего вопроса
             
             yesButton.isEnabled = true
             noButton.isEnabled = true
