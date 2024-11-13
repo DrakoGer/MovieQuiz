@@ -86,7 +86,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.contentMode = .scaleAspectFill
@@ -94,24 +94,21 @@ final class MovieQuizViewController: UIViewController {
         let firstQuestion = questions[currentQuestionIndex]
         let viewModel = convert(model: firstQuestion)
         show(quiz: viewModel)
-        
+
         let restartQuestion = questions[currentQuestionIndex]
         let resultModel = convert(model: restartQuestion)
         show(quiz: resultModel)
     }
     // действия нажатия на кнопку "Да"
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let giveAnswer = true
-        handleAnswer(givenAnswer: false)
-        
+        handleAnswer(givenAnswer: true)
+
     }
     // действия нажатия на кнопку "Нет"
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-
-        let giveAnswer = false
         handleAnswer(givenAnswer: false)
     }
-    
+
     private func handleAnswer(givenAnswer: Bool) {
         let currentQuestion = questions[currentQuestionIndex]
         yesButton.isEnabled = false
@@ -119,7 +116,7 @@ final class MovieQuizViewController: UIViewController {
         let isCorrect = givenAnswer == currentQuestion.correctAnswer
         showAnswerResult(isCorrect: isCorrect)
     }
-    
+
     // метод конвертации вопроса
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
@@ -145,7 +142,7 @@ final class MovieQuizViewController: UIViewController {
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)  //для отображения следующего вопроса
-            
+
             yesButton.isEnabled = true
             noButton.isEnabled = true
         }
@@ -189,10 +186,13 @@ final class MovieQuizViewController: UIViewController {
         let newGameAction = UIAlertAction(title: resultModel.buttonText, style: .default) { _ in
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            
+
             let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)  
+            self.show(quiz: viewModel)
+            
+            self.yesButton.isEnabled = true
+            self.noButton.isEnabled = true
         }
         alert.addAction(newGameAction)
         self.present(alert, animated: true, completion: nil)  // показывает всплывающее окно
