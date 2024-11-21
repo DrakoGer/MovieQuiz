@@ -3,34 +3,28 @@ import UIKit
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Outlets
+    
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-    
+
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
     
     // MARK: - Model
-    private struct ViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
-    }
-
+    
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    
+    private var alertPresenter: AlertPresenter?
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
     // MARK: - QuestionFactoryDelegate
-    
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
             return
         }
-        
         currentQuestion = question
         let viewModel = convert(model: question)
         
@@ -38,12 +32,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self?.show(quiz: viewModel)
         }
     }
-    
-
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.contentMode = .scaleAspectFill
@@ -53,17 +45,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.questionFactory = questionFactory
         
         questionFactory.requestNextQuestion()
+        
+        alertPresenter = AlertPresenter(viewController: self)
     }
     
     // MARK: - Actions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         handleAnswer(givenAnswer: true)
-
+        
     }
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         handleAnswer(givenAnswer: false)
     }
-    
     // MARK: - Private functions
     private func handleAnswer(givenAnswer: Bool) {
         guard let currentQuestion = currentQuestion else { return }
@@ -84,28 +77,37 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // метод для перехода к следующему вопросу / показа результатов
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let text = correctAnswers == questionsAmount ?
-            "Поздравляю, вы ответили на 10 из 10!" :
-            "Ваш ответили на \(correctAnswers) из 10, попробуйте еще раз!"
-            
-            let viewModel = QuizResultViewModel(
-                title: "Этот раунд окончен!",
-                text: text,
-                buttonText: "Сыграть ещё раз"
+            let alertModel = AlertModel(
+                title: "Игра окончена!",
+                message: "Ваш ответили на \(correctAnswers) из 10",
+                buttonText: "Сыграть ещё раз!",
+                completion: { [weak self] in
+                    self?.resetGame()
+                }
             )
-            show(quiz: viewModel)
+            alertPresenter?.showAlert(model: alertModel)
         } else {
-            currentQuestionIndex += 1
+            currentQuestionIndex += 1  //для перехода к следующему вопросу
             questionFactory?.requestNextQuestion()
-
+            
             yesButton.isEnabled = true
             noButton.isEnabled = true
         }
     }
+    
+    func resetGame() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
+        
+        questionFactory?.requestNextQuestion()
+    }
     // метод для смены цвета рамки, в зависимости от ответа
     private func showAnswerResult(isCorrect: Bool) {
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-
+        
         if isCorrect {
             correctAnswers += 1
         }
@@ -127,23 +129,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         textLabel.text = resultModel.title  // заголовок
         imageView.isHidden = false  // false делает изображение видимым
         counterLabel.text = resultModel.text  // текст результата
-        // Алерт для отображения сообщения о завершении игры
-        let alert = UIAlertController(
-            title: resultModel.title,
-            message: resultModel.text,
-            preferredStyle: .alert
-        )
-        // действие "Новая игра" для сброса игры и начала заново
-        let newGameAction = UIAlertAction(title: resultModel.buttonText, style: .default) { _ in
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.questionFactory?.requestNextQuestion()
-            
-            self.yesButton.isEnabled = true
-            self.noButton.isEnabled = true
-        }
-        alert.addAction(newGameAction)
-        self.present(alert, animated: true, completion: nil)  // показывает всплывающее окно
+        
     }
 }
 
@@ -209,4 +195,4 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
  Настоящий рейтинг: 5,8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
-*/
+ */
