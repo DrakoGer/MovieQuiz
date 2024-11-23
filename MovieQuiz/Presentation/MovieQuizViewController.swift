@@ -7,7 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-
+    
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
     
@@ -15,10 +15,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
+    
     private var alertPresenter: AlertPresenter?
+    
+    private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
+    
+    private var statisticService: StatisticServiceProtocol!
     
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -47,6 +51,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory.requestNextQuestion()
         
         alertPresenter = AlertPresenter(viewController: self)
+        
+        statisticService = StatisticService()
     }
     
     // MARK: - Actions
@@ -58,6 +64,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         handleAnswer(givenAnswer: false)
     }
     // MARK: - Private functions
+    // метод работы кнопок "Да"/"Нет"
     private func handleAnswer(givenAnswer: Bool) {
         guard let currentQuestion = currentQuestion else { return }
         yesButton.isEnabled = false
@@ -77,15 +84,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // метод для перехода к следующему вопросу / показа результатов
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            let alertModel = AlertModel(
-                title: "Игра окончена!",
-                message: "Ваш ответили на \(correctAnswers) из 10",
-                buttonText: "Сыграть ещё раз!",
-                completion: { [weak self] in
-                    self?.resetGame()
-                }
-            )
-            alertPresenter?.showAlert(model: alertModel)
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            
+            let text = """
+                                Ваш результат: \(correctAnswers)/\(questionsAmount)
+                                Количество сыгранных квизов: \(statisticService.gamesCount)
+                                Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+                                Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+                                """
+            
+            let viewModel = QuizResultViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            
+            show(quiz: viewModel)
+            
+            yesButton.isEnabled = true
+            noButton.isEnabled = true
+            
         } else {
             currentQuestionIndex += 1  //для перехода к следующему вопросу
             questionFactory?.requestNextQuestion()
@@ -126,10 +143,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     // метод для отображения итогового результата квиза
     private func show(quiz resultModel: QuizResultViewModel) {
-        textLabel.text = resultModel.title  // заголовок
-        imageView.isHidden = false  // false делает изображение видимым
-        counterLabel.text = resultModel.text  // текст результата
         
+        let alertModel = AlertModel(
+            title: resultModel.title,
+            message: resultModel.text,
+            buttonText: resultModel.buttonText,
+            completion: { [weak self] in
+                guard let self = self else { return }
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                self.questionFactory!.requestNextQuestion()
+            }
+        )
+        alertPresenter?.showAlert(model: alertModel)
     }
 }
 

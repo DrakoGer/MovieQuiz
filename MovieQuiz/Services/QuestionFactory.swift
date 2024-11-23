@@ -52,6 +52,4 @@ class QuestionFactory: QuestionFactoryProtocol {
             let question = questions[index]
             delegate?.didReceiveNextQuestion(question: question)
         }
-    
-
 }
