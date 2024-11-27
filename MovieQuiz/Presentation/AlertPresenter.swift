@@ -8,11 +8,7 @@
 import UIKit
 import Foundation
 
-<<<<<<< HEAD
 final class AlertPresenter {
-=======
-class AlertPresenter {
->>>>>>> fa235488d6b1a71993fa1600a267981bba6be47d
     
     private weak var viewController: UIViewController?
     
