@@ -45,7 +45,6 @@ class QuestionFactory: QuestionFactoryProtocol {
                      correctAnswer: false)
     ]
     func requestNextQuestion() {
-<<<<<<< HEAD
         guard let index = (0..<questions.count).randomElement() else {
             delegate?.didReceiveNextQuestion(question: nil)
             return
@@ -53,13 +52,4 @@ class QuestionFactory: QuestionFactoryProtocol {
         let question = questions[index]
         delegate?.didReceiveNextQuestion(question: question)
     }
-=======
-            guard let index = (0..<questions.count).randomElement() else {
-                delegate?.didReceiveNextQuestion(question: nil)
-                return
-            }
-            let question = questions[index]
-            delegate?.didReceiveNextQuestion(question: question)
-        }
->>>>>>> fa235488d6b1a71993fa1600a267981bba6be47d
 }
