@@ -35,7 +35,7 @@ public class QuestionFactory: QuestionFactoryProtocol {
                     self.delegate?.didFailToLoadData(with: error)
                 }
             }
-        }
+         }                         
     }
     
     func setup(delegate: QuestionFactoryDelegate) {
