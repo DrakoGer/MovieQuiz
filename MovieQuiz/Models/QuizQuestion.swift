@@ -10,7 +10,7 @@ import Foundation
 
 struct QuizQuestion {
     
-    let image: String  // Название изображения
+    let image: Data  // Название изображения
     let text: String   // Вопрос о фильме
     let correctAnswer: Bool  // Правильный ответ
 }
