@@ -24,6 +24,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
+    //private var statisticService: StatisticService?
     private var statisticService: StatisticServiceProtocol!
     
     
@@ -31,14 +32,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //imageView.backgroundColor = .ypGra
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = UIColor.clear.cgColor
         imageView.contentMode = .scaleAspectFill
         
         alertPresenter = AlertPresenter()
         statisticService = StatisticService()
 
-        activityIndicator.hidesWhenStopped = false
+        activityIndicator.hidesWhenStopped = true
         
         questionFactory = QuestionFactory (moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
@@ -118,18 +121,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
         activityIndicator.startAnimating() // для анимации
     }
     
     private func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
+        
     }
     // алерт ошибки загрузки
     private func showNetworkError(message: String) {
-        hideLoadingIndicator()
-        
         let errorAlert = AlertModel(title: "Ошибка",
                                     message: message,
                                     buttonText: "Попробуйте еще раз") { [weak self] in
@@ -144,12 +144,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter?.showAlert(on: self, with: errorAlert)
     }
     
-    public func didLoadDataFromServer() {
-        activityIndicator.isHidden = true // скрываем индикатор загрузки
+    func didLoadDataFromServer() {
+        showLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
     
-    public func didFailToLoadData(with error: Error) {
+    func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
     }
     
@@ -172,13 +172,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             correctAnswers += 1
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {  // для задержки отображения рамки
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // Используем weak self
+            guard let self = self else { return }  // для задержки отображения рамки
             self.imageView.layer.borderColor = UIColor.clear.cgColor
             self.showNextQuestionOrResults()
         }
     }
     // метод для отображения текущего вопроса на экране
     private func show(quiz viewModel: QuizStepViewModel) {
+        hideLoadingIndicator()
         imageView.isHidden = false  // false делает изображение видимым
         imageView.image = viewModel.image  // изображение вопроса
         textLabel.text = viewModel.question  // текст вопроса

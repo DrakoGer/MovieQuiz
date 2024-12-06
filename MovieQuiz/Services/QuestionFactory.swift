@@ -57,8 +57,8 @@ public class QuestionFactory: QuestionFactoryProtocol {
                 let imageData = try Data(contentsOf: movie.imageURL)
                 
                 let rating = Float(movie.rating ?? "0.0") ?? 0.0
-                let text = "Рейтинг этого фильма больше чем 8.5?"
-                let correctAnswer = rating > 8.5
+                let text = "Рейтинг этого фильма больше чем 8.0?"
+                let correctAnswer = rating > 8.0
                 
                 let question = QuizQuestion(image: imageData, text: text, correctAnswer: correctAnswer)
                 DispatchQueue.main.async { [weak self] in

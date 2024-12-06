@@ -40,10 +40,3 @@ struct MoviesLoader: MoviesLoading {
         }
     }
 }
-
-
-
-
-
-
-

@@ -104,13 +104,8 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="q92-wN-XgO">
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
-
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="CyP-aX-evX">
-                                <rect key="frame" x="207" y="448" width="6" height="2"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -135,7 +130,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-57.971014492753625" y="54.241071428571423"/>
+            <point key="canvasLocation" x="-57.209302325581397" y="54.721030042918457"/>
         </scene>
     </scenes>
     <resources>
