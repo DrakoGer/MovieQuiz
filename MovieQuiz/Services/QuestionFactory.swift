@@ -8,7 +8,7 @@
 import UIKit
 import Foundation
 
-public class QuestionFactory: QuestionFactoryProtocol {
+class QuestionFactory: QuestionFactoryProtocol {
     
     private let moviesLoader: MoviesLoading
     weak var delegate: QuestionFactoryDelegate?

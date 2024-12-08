@@ -24,15 +24,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
-    //private var statisticService: StatisticService?
-    private var statisticService: StatisticServiceProtocol!
+    private var statisticService: StatisticServiceProtocol?
     
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //imageView.backgroundColor = .ypGra
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = UIColor.clear.cgColor
@@ -90,6 +88,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     // метод для перехода к следующему вопросу / показа результатов
     private func showNextQuestionOrResults() {
+        guard let statisticService = statisticService else { return }
+        
         if currentQuestionIndex == questionsAmount - 1 {
             statisticService.store(correct: correctAnswers, total: questionsAmount)
             
