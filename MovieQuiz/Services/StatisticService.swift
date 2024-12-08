@@ -31,6 +31,7 @@ final class StatisticService {
 }
 
 extension StatisticService: StatisticServiceProtocol {
+    
     var gamesCount: Int {
         get {
             return storage.integer(forKey: Keys.gamesCount.rawValue)

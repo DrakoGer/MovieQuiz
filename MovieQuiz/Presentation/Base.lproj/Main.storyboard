@@ -8,6 +8,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="YS Display-Medium.ttf">
+            <string>YSDisplay-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Movie Quiz View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -37,8 +42,9 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="763" image="Deadpool" translatesAutoresizingMaskIntoConstraints="NO" id="dWR-44-1JI" userLabel="Preview Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="763" translatesAutoresizingMaskIntoConstraints="NO" id="dWR-44-1JI" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.333333333333314" width="374" height="561"/>
+                                        <color key="backgroundColor" name="YP Black"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="dWR-44-1JI" secondAttribute="height" multiplier="2:3" id="uoO-Mq-fdr"/>
                                         </constraints>
@@ -48,7 +54,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVQ-Gt-nCl" userLabel="Question Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Загрузка квиза" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVQ-Gt-nCl" userLabel="Question Label">
                                         <rect key="frame" x="0.0" y="624.33333333333337" width="374" height="103.66666666666663"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Medium" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
@@ -98,21 +104,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="CyP-aX-evX">
-                                <rect key="frame" x="207" y="448" width="6" height="2"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="q92-wN-XgO">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="p1c-gT-7tT" secondAttribute="bottom" id="6Oz-A4-ODo"/>
+                            <constraint firstItem="q92-wN-XgO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9Yq-d0-ro5"/>
+                            <constraint firstItem="q92-wN-XgO" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ET2-Wi-uxT"/>
                             <constraint firstItem="p1c-gT-7tT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="GSW-UX-JoM"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="p1c-gT-7tT" secondAttribute="trailing" constant="20" id="PA7-iq-5xt"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="leading" secondItem="p1c-gT-7tT" secondAttribute="leading" constant="-20" id="ZRa-wu-BlZ"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="q92-wN-XgO" id="ezf-Wm-Gzz"/>
                         <outlet property="counterLabel" destination="IVa-Ed-Wyt" id="ktk-jR-tJc"/>
                         <outlet property="imageView" destination="dWR-44-1JI" id="8R7-j3-ybu"/>
                         <outlet property="noButton" destination="JLr-al-xqB" id="XfC-1N-aKE"/>
@@ -122,11 +130,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-57.971014492753625" y="54.241071428571423"/>
+            <point key="canvasLocation" x="-57.209302325581397" y="54.721030042918457"/>
         </scene>
     </scenes>
     <resources>
-        <image name="Deadpool" width="2000" height="3000"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
