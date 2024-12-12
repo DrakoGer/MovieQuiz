@@ -60,9 +60,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
 
     private func proceedWithAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else { return }
-
-        let givenAnswer = isYes
-        let isCorrect = givenAnswer == currentQuestion.correctAnswer
+        
+        let isCorrect = currentQuestion.correctAnswer
 
         didAnswer(isCorrectAnswer: isCorrect)
         viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
