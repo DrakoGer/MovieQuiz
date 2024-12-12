@@ -9,7 +9,7 @@ import UIKit
 import Foundation
 
 protocol QuestionFactoryProtocol {
-    func requestNextQuestion()
-    func resetQuestions()
     func loadData()
+    func requestNextQuestion()
+
 }

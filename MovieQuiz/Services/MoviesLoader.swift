@@ -13,7 +13,11 @@ protocol MoviesLoading {
 
 struct MoviesLoader: MoviesLoading {
     // MARK: - NetworkClient
-    private let networkClient = NetworkClient()
+    private let networkClient: NetworkRouting
+    
+    init(networkClient: NetworkRouting = NetworkClient()) {
+        self.networkClient = networkClient
+    }
     
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
@@ -30,8 +34,7 @@ struct MoviesLoader: MoviesLoading {
                 do {
                     let MostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
                     handler(.success(MostPopularMovies))
-                }
-                catch {
+                } catch {
                     handler(.failure(error))
                 }
             case .failure(let error):
